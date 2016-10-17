@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Tasks</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="task_categories">
+        <item>Choose a category...</item>
+        <item>Personal</item>
+        <item>Shopping</item>
+        <item>College</item>
+        <item>Others</item>
+    </string-array>
+</resources>
