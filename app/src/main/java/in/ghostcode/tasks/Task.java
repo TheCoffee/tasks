@@ -9,6 +9,9 @@ public class Task {
     private String title, category;
     private Boolean status;
 
+    public Task() {
+    }
+
     public Task(String title, String category, Boolean status) {
         this.title = title;
         this.category = category;

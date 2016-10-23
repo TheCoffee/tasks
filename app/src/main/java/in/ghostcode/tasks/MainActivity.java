@@ -23,20 +23,26 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewTasksAdapter tasksAdapter;
     private ArrayList<Task> tasks = new ArrayList<>();
 
+    private TasksSQLHelper tasksSQLHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        tasks.add(new Task("Get PS4 CDs", "Personal", false));
-        tasks.add(new Task("Buy 1L Milk", "Shopping", false));
-        tasks.add(new Task("Finish assessment prep", "College", true));
-        tasks.add(new Task("Do DevDroid Assignment", "Others", false));
+//
+//        tasks.add(new Task("Get PS4 CDs", "Personal", false));
+//        tasks.add(new Task("Buy 1L Milk", "Shopping", false));
+//        tasks.add(new Task("Finish assessment prep", "College", true));
+//        tasks.add(new Task("Do DevDroid Assignment", "Others", false));
 
         recyclerView = (RecyclerView) findViewById(R.id.tasks_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        tasksSQLHelper = new TasksSQLHelper(this);
+        tasks = tasksSQLHelper.getAllTasks();
+        tasksSQLHelper.close();
 
         tasksAdapter = new RecyclerViewTasksAdapter(tasks, MainActivity.this);
         recyclerView.setAdapter(tasksAdapter);
@@ -70,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
                         int pos = dialogSpinner.getSelectedItemPosition();
                         if(pos!=0 && !title.equals("")) {
                             String category = dialogSpinner.getSelectedItem().toString();
+                            tasksSQLHelper = new TasksSQLHelper(MainActivity.this);
+                            tasksSQLHelper.insertIntoDB(title, category, String.valueOf(false));
                             tasks.add(new Task(title, category, false));
                             tasksAdapter.notifyDataSetChanged();
+                            tasksSQLHelper.close();
                         } else {
                             Toast.makeText(MainActivity.this, "Select a title and category", Toast.LENGTH_SHORT).show();
                         }
